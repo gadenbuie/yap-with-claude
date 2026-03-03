@@ -51,7 +51,7 @@ def play(path: str, wait: bool = True) -> None:
     if wait:
         subprocess.run(cmd, check=True)
     else:
-        subprocess.Popen(cmd)
+        subprocess.Popen(cmd, start_new_session=True)
 
 
 def list_voices(kokoro: Kokoro) -> None:
