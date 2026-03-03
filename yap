@@ -42,12 +42,16 @@ def ensure_model() -> tuple[Path, Path]:
     return model_path, voices_path
 
 
-def play(path: str) -> None:
-    """Play a wav file using the system player (fire-and-forget)."""
+def play(path: str, wait: bool = True) -> None:
+    """Play a wav file using the system player."""
     if sys.platform == "darwin":
-        subprocess.Popen(["afplay", path])
+        cmd = ["afplay", path]
     else:
-        subprocess.Popen(["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", path])
+        cmd = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", path]
+    if wait:
+        subprocess.run(cmd, check=True)
+    else:
+        subprocess.Popen(cmd)
 
 
 def list_voices(kokoro: Kokoro) -> None:
@@ -66,6 +70,7 @@ def main() -> None:
     p.add_argument("-s", "--speed", type=float, default=DEFAULT_SPEED, help=f"Speed multiplier (default: {DEFAULT_SPEED})")
     p.add_argument("-l", "--lang", default="en-us", help="Language code (default: en-us)")
     p.add_argument("-o", "--output", help="Save to file instead of playing")
+    p.add_argument("--no-wait", action="store_true", help="Start playback and return immediately (don't wait for audio to finish)")
     p.add_argument("--voices", action="store_true", help="List available voices")
 
     args = p.parse_args()
@@ -98,7 +103,7 @@ def main() -> None:
     else:
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
             sf.write(f.name, samples, sample_rate)
-            play(f.name)
+            play(f.name, wait=not args.no_wait)
 
 
 if __name__ == "__main__":

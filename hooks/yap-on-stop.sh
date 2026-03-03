@@ -34,6 +34,6 @@ if [ -z "$CLEAN" ]; then
   exit 0
 fi
 
-"${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/}yap" "$CLEAN" &
+"${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/}yap" --no-wait "$CLEAN" &
 disown
 exit 0
