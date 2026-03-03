@@ -27,13 +27,18 @@ Pair with a speach-to-text utility like [Spokenly](https://spokenly.app/) or [Wi
 
 ## Installation
 
-### 1. Install as a Claude Code plugin
+### 1. Add the marketplace and install the plugin
 
-```bash
-claude plugin install gadenbuie/yap --scope user
+From within a Claude Code session, add the yap marketplace and install the plugin:
+
+```
+/plugin marketplace add gadenbuie/yap-with-claude
+/plugin install yap@gadenbuie-yap
 ```
 
-This installs the plugin globally and registers all three hooks. The `yap` script is bundled inside the plugin — no separate download needed.
+This installs the plugin to your user scope (available across all projects) and registers all three hooks. The `yap` script is bundled inside the plugin — no separate download needed.
+
+You can also install via the interactive UI: run `/plugin`, go to **Discover**, and select **yap**.
 
 Model files (~300MB) download to `~/.cache/kokoro-onnx/` automatically on first use.
 
@@ -46,20 +51,6 @@ By default, yap is **off** — it only speaks when you turn it on. In any Claude
 ```
 
 to toggle it on. Your preference is saved per workspace in `.claude/yap-enabled`.
-
-### Optional: make `yap` available on your `$PATH`
-
-If you also want to use `yap` from the terminal, symlink it from the installed plugin:
-
-```bash
-ln -sf "$(claude plugin path gadenbuie/yap)/yap" ~/.local/bin/yap
-```
-
-Then verify:
-
-```bash
-yap "Hello, world"
-```
 
 ## Usage
 

@@ -1,0 +1,14 @@
+{
+  "name": "gadenbuie-yap",
+  "owner": {
+    "name": "Garrick Aden-Buie",
+    "url": "https://github.com/gadenbuie"
+  },
+  "plugins": [
+    {
+      "name": "yap",
+      "source": ".",
+      "description": "Speaks Claude's responses and questions aloud using Kokoro TTS locally"
+    }
+  ]
+}

@@ -6,7 +6,7 @@
     "name": "Garrick Aden-Buie",
     "url": "https://github.com/gadenbuie"
   },
-  "repository": "https://github.com/gadenbuie/yap",
+  "repository": "https://github.com/gadenbuie/yap-with-claude",
   "license": "MIT",
   "keywords": ["tts", "text-to-speech", "kokoro", "audio", "accessibility"],
   "hooks": "./hooks/hooks.json"
