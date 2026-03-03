@@ -42,16 +42,15 @@ def ensure_model() -> tuple[Path, Path]:
     return model_path, voices_path
 
 
-def play(path: str, wait: bool = True) -> None:
+def play(path: str) -> None:
     """Play a wav file using the system player."""
     if sys.platform == "darwin":
-        cmd = ["afplay", path]
+        subprocess.run(["afplay", path], check=True)
     else:
-        cmd = ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", path]
-    if wait:
-        subprocess.run(cmd, check=True)
-    else:
-        subprocess.Popen(cmd, start_new_session=True)
+        subprocess.run(
+            ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", path],
+            check=True,
+        )
 
 
 def list_voices(kokoro: Kokoro) -> None:
@@ -74,6 +73,11 @@ def main() -> None:
     p.add_argument("--voices", action="store_true", help="List available voices")
 
     args = p.parse_args()
+
+    if args.no_wait:
+        if os.fork() != 0:
+            sys.exit(0)
+        os.setsid()
 
     model_path, voices_path = ensure_model()
     kokoro = Kokoro(str(model_path), str(voices_path))
@@ -103,7 +107,7 @@ def main() -> None:
     else:
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
             sf.write(f.name, samples, sample_rate)
-            play(f.name, wait=not args.no_wait)
+            play(f.name)
 
 
 if __name__ == "__main__":
