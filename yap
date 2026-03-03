@@ -43,14 +43,11 @@ def ensure_model() -> tuple[Path, Path]:
 
 
 def play(path: str) -> None:
-    """Play a wav file using the system player."""
+    """Play a wav file using the system player (fire-and-forget)."""
     if sys.platform == "darwin":
-        subprocess.run(["afplay", path], check=True)
+        subprocess.Popen(["afplay", path])
     else:
-        subprocess.run(
-            ["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", path],
-            check=True,
-        )
+        subprocess.Popen(["ffplay", "-nodisp", "-autoexit", "-loglevel", "quiet", path])
 
 
 def list_voices(kokoro: Kokoro) -> None:
