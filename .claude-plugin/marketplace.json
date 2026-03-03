@@ -7,7 +7,7 @@
   "plugins": [
     {
       "name": "yap",
-      "source": ".",
+      "source": "./",
       "description": "Speaks Claude's responses and questions aloud using Kokoro TTS locally"
     }
   ]
