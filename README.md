@@ -81,7 +81,18 @@ yap -s 1.3 "Faster speech"           # adjust speed
 yap --no-wait "Hello"                # fire-and-forget, returns immediately
 ```
 
-The default voice is `am_fenrir`. Set `YAP_VOICE` and `YAP_SPEED` in your shell profile to change the defaults for both the hooks and direct CLI usage.
+The default voice is `am_fenrir` and the default speed is `1.25`.
+
+### Changing the default voice and speed
+
+Set `YAP_VOICE` and `YAP_SPEED` in your shell profile (e.g. `~/.zshrc` or `~/.bashrc`):
+
+```bash
+export YAP_VOICE=af_heart
+export YAP_SPEED=1.1
+```
+
+These apply to both the Claude Code hooks and direct CLI usage. Run `yap --voices` to see all available voices.
 
 ## How it works
 
