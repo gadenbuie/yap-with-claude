@@ -18,16 +18,21 @@ fi
 
 ORDINALS=("1st" "2nd" "3rd")
 
-TEXT="I have a question for you."
-for i in $(seq 0 $((COUNT - 1))); do
-  QUESTION=$(echo "$INPUT" | jq -r ".tool_input.questions[$i].question")
-  if [ "$i" -lt 3 ]; then
-    ORDINAL="${ORDINALS[$i]}"
-  else
-    ORDINAL="$((i + 1))th"
-  fi
-  TEXT="$TEXT $ORDINAL question. $QUESTION"
-done
+if [ "$COUNT" -eq 1 ]; then
+  QUESTION=$(echo "$INPUT" | jq -r '.tool_input.questions[0].question')
+  TEXT="I have a question for you. $QUESTION"
+else
+  TEXT="I have a question for you."
+  for i in $(seq 0 $((COUNT - 1))); do
+    QUESTION=$(echo "$INPUT" | jq -r ".tool_input.questions[$i].question")
+    if [ "$i" -lt 3 ]; then
+      ORDINAL="${ORDINALS[$i]}"
+    else
+      ORDINAL="$((i + 1))th"
+    fi
+    TEXT="$TEXT $ORDINAL question. $QUESTION"
+  done
+fi
 
 "${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/}yap" --no-wait "$TEXT" </dev/null >/dev/null 2>&1 &
 disown
