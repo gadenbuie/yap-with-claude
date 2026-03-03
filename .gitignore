@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+*.mp3
+*.wav
+*.opus
+*.flac
+
+# Local Claude Code state (not committed)
+.claude/settings.local.json
+.claude/yap-enabled
