@@ -29,7 +29,7 @@ for i in $(seq 0 $((COUNT - 1))); do
   TEXT="$TEXT $ORDINAL question. $QUESTION"
 done
 
-yap "$TEXT" &
+"${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/}yap" "$TEXT" &
 disown
 
 exit 0

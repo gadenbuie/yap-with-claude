@@ -19,43 +19,23 @@ Kokoro is a compact (~60MB), high-quality open-source TTS model that runs entire
 
 ## Requirements
 
-- [uv](https://docs.astral.sh/uv/) — for running the `yap` script
+- [uv](https://docs.astral.sh/uv/) — for running `yap`
 - [pandoc](https://pandoc.org) — for markdown-to-plain-text conversion
 - macOS (uses `afplay`) or Linux with `ffplay` installed
 
 ## Installation
 
-### 1. Install `yap`
-
-Put `yap` somewhere on your `$PATH`:
-
-```bash
-# Option A: clone and symlink
-git clone https://github.com/gadenbuie/yap
-ln -s "$PWD/yap/yap" /usr/local/bin/yap
-
-# Option B: download directly
-curl -o /usr/local/bin/yap https://raw.githubusercontent.com/gadenbuie/yap/main/yap
-chmod +x /usr/local/bin/yap
-```
-
-Verify it works:
-
-```bash
-yap "Hello, world"
-```
-
-Model files will download to `~/.cache/kokoro-onnx/` on first run (~300MB, one-time).
-
-### 2. Install as a Claude Code plugin
+### 1. Install as a Claude Code plugin
 
 ```bash
 claude plugin install gadenbuie/yap --scope user
 ```
 
-This registers the hooks globally, so yap is available in every Claude Code session.
+This installs the plugin globally and registers all three hooks. The `yap` script is bundled inside the plugin — no separate download needed.
 
-### 3. Enable yap
+Model files (~300MB) download to `~/.cache/kokoro-onnx/` automatically on first use.
+
+### 2. Enable yap
 
 By default, yap is **off** — it only speaks when you turn it on. In any Claude Code session:
 
@@ -64,6 +44,20 @@ By default, yap is **off** — it only speaks when you turn it on. In any Claude
 ```
 
 to toggle it on. Your preference is saved per workspace in `.claude/yap-enabled`.
+
+### Optional: make `yap` available on your `$PATH`
+
+If you also want to use `yap` from the terminal, symlink it from the installed plugin:
+
+```bash
+ln -sf "$(claude plugin path gadenbuie/yap)/yap" ~/.local/bin/yap
+```
+
+Then verify:
+
+```bash
+yap "Hello, world"
+```
 
 ## Usage
 
@@ -84,7 +78,7 @@ yap -o out.wav "Hello"               # save to file
 yap -s 1.3 "Faster speech"          # adjust speed
 ```
 
-The default voice is `af_heart` (highest-rated). The hooks use `am_fenrir`.
+The default voice is `am_liam`. Set `YAP_VOICE` and `YAP_SPEED` in your shell profile to change the defaults for both the hooks and direct CLI usage.
 
 ## How it works
 
