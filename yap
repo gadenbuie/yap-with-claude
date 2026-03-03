@@ -78,6 +78,10 @@ def main() -> None:
         if os.fork() != 0:
             sys.exit(0)
         os.setsid()
+        devnull = os.open(os.devnull, os.O_RDWR)
+        for fd in (0, 1, 2):
+            os.dup2(devnull, fd)
+        os.close(devnull)
 
     model_path, voices_path = ensure_model()
     kokoro = Kokoro(str(model_path), str(voices_path))

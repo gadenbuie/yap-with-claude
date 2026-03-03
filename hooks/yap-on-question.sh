@@ -29,7 +29,7 @@ for i in $(seq 0 $((COUNT - 1))); do
   TEXT="$TEXT $ORDINAL question. $QUESTION"
 done
 
-"${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/}yap" --no-wait "$TEXT" &
+"${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/}yap" --no-wait "$TEXT" </dev/null >/dev/null 2>&1 &
 disown
 
 exit 0
