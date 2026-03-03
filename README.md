@@ -8,6 +8,8 @@ Working with Claude Code is often heads-down, eyes-on-screen work. Yap lets you 
 
 Kokoro is a compact (~60MB), high-quality open-source TTS model that runs entirely on your machine via ONNX. Model files (~300MB) download automatically on first use.
 
+Pair with a speach-to-text utility like [Spokenly](https://spokenly.app/) or [Wispr Flow](https://wisprflow.ai/) for back-and-forth conversations with Claude.
+
 ## Features
 
 - **Reads responses aloud** — Claude's final message is spoken when it finishes
@@ -76,9 +78,10 @@ yap -v am_fenrir "Hello"             # pick a voice
 yap --voices                         # list available voices
 yap -o out.wav "Hello"               # save to file
 yap -s 1.3 "Faster speech"          # adjust speed
+yap --no-wait "Hello"                # fire-and-forget, returns immediately
 ```
 
-The default voice is `am_liam`. Set `YAP_VOICE` and `YAP_SPEED` in your shell profile to change the defaults for both the hooks and direct CLI usage.
+The default voice is `am_fenrir`. Set `YAP_VOICE` and `YAP_SPEED` in your shell profile to change the defaults for both the hooks and direct CLI usage.
 
 ## How it works
 

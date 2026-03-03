@@ -4,19 +4,22 @@ A small single-file CLI that turns text into speech using [Kokoro TTS](https://g
 
 ## Quick orientation
 
-- **`yap.py`** — Single-file Python CLI (PEP 723 inline script metadata). Run with `uv run yap.py`.
+- **`yap`** — Single-file Python CLI (PEP 723 inline script metadata). Executable directly; run with `uv run yap` or just `yap` if on `$PATH`.
+- **`hooks/`** — Claude Code hook scripts (plugin root). `.claude/hooks/` contains symlinks to these.
+- **`.claude-plugin/plugin.json`** — Plugin manifest; installs as `claude plugin install gadenbuie/yap`.
 - **`_dev/`** — Research docs, planning notes. Not shipped.
 - Model files (~300MB) auto-download to `~/.cache/kokoro-onnx/` on first run.
 
 ## Usage
 
 ```bash
-uv run yap.py "Hello world"              # speak text
-echo "Hello" | uv run yap.py             # pipe from stdin
-uv run yap.py -v am_fenrir "Hello"       # pick a voice
-uv run yap.py --voices                   # list voices
-uv run yap.py -o out.wav "Hello"         # save to file
-uv run yap.py -s 1.3 "Faster speech"    # adjust speed
+yap "Hello world"              # speak text
+echo "Hello" | yap             # pipe from stdin
+yap -v am_fenrir "Hello"       # pick a voice
+yap --voices                   # list voices
+yap -o out.wav "Hello"         # save to file
+yap -s 1.3 "Faster speech"    # adjust speed
+yap --no-wait "Hello"          # fire-and-forget (returns immediately)
 ```
 
 ## Key decisions
@@ -24,19 +27,24 @@ uv run yap.py -s 1.3 "Faster speech"    # adjust speed
 - `kokoro-onnx` over `kokoro` (PyTorch) — ~60MB runtime vs ~2GB, simpler API
 - PEP 723 inline script deps — no pyproject.toml, `uv run` just works
 - `afplay` on macOS, `ffplay` fallback on Linux for playback
-- Default voice: `af_heart` (highest rated)
+- Default voice: `am_fenrir` — override with `YAP_VOICE` env var
+- Default speed: `1.25` — override with `YAP_SPEED` env var
+- `--no-wait`: forks immediately after arg parsing, parent exits (releases Claude Code's process group), child calls `os.setsid()` and redirects fd 0/1/2 to `/dev/null` before doing TTS + playback
 
-## Claude Code hooks integration
+## Claude Code plugin
 
-- `.claude/hooks/yap-on-stop.sh` — Stop hook that reads Claude's response aloud
-- `.claude/settings.local.json` — Enables the hook (local only, not committed)
-- Uses `last_assistant_message` field from the Stop event stdin JSON
-- Strips markdown (code blocks, tables, bold, links, etc.) before speaking
-- Checks `stop_hook_active` to prevent infinite loops
-- Runs `uv run yap.py` in the background so it doesn't block Claude
-- Text is truncated to 2000 chars to keep speech reasonable
+Distributed as a Claude Code plugin. Three hooks:
 
-## Future directions
+- **`hooks/yap-on-stop.sh`** — `Stop` event: strips markdown via `pandoc`, speaks Claude's last response
+- **`hooks/yap-on-question.sh`** — `PreToolUse` (AskUserQuestion): reads all questions aloud with ordinal prefixes before the dialog appears
+- **`hooks/yap-toggle.sh`** — `UserPromptSubmit`: intercepts `#yap` / `#yap on` / `#yap off`, toggles per-workspace flag file
 
-- Streaming playback for long text
-- Possibly package as a proper `uv` project with `[project.scripts]` entrypoint
+Per-workspace state: `.claude/yap-enabled` (flag file derived from `cwd` in hook stdin JSON — works for both local and global installs).
+
+Hooks call `yap --no-wait` with `</dev/null >/dev/null 2>&1 &` and `disown` to fully detach from Claude Code's process group and pipe FDs.
+
+Hooks use `${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/}yap` — resolves to plugin-bundled `yap` when installed as a plugin, falls back to `yap` in PATH for local dev.
+
+## #yap toggle
+
+Users type `#yap`, `#yap on`, or `#yap off` in the Claude Code chat. The `UserPromptSubmit` hook intercepts it (before Claude sees it), updates the flag file, and returns `decision: "block"` with `additionalContext` informing Claude of the new state.
