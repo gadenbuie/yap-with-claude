@@ -1,5 +1,7 @@
 # yap
 
+Single-file Python CLI (`yap`) that pipes text through Kokoro TTS and plays it locally. Distributed as a Claude Code plugin via three hooks in `hooks/`. No server, no API keys.
+
 > Maintain this file: keep it minimal, prune anything obvious from a repo scan, and update it when decisions change.
 
 ## Non-obvious decisions
