@@ -9,6 +9,7 @@
 """yap — turn text into speech using Kokoro TTS (local, no server needed)."""
 
 import argparse
+import fcntl
 import os
 import subprocess
 import sys
@@ -40,6 +41,9 @@ def ensure_model() -> tuple[Path, Path]:
             print(f"  saved to {path}", file=sys.stderr)
 
     return model_path, voices_path
+
+
+LOCK_FILE = CACHE_DIR / "yap.lock"
 
 
 def play(path: str) -> None:
@@ -74,6 +78,7 @@ def main() -> None:
 
     args = p.parse_args()
 
+    playback_lock = None
     if args.no_wait:
         if os.fork() != 0:
             sys.exit(0)
@@ -82,6 +87,10 @@ def main() -> None:
         for fd in (0, 1, 2):
             os.dup2(devnull, fd)
         os.close(devnull)
+        # Acquire lock immediately to preserve invocation order
+        LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
+        playback_lock = open(LOCK_FILE, "w")
+        fcntl.flock(playback_lock, fcntl.LOCK_EX)
 
     model_path, voices_path = ensure_model()
     kokoro = Kokoro(str(model_path), str(voices_path))
@@ -112,6 +121,9 @@ def main() -> None:
         with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as f:
             sf.write(f.name, samples, sample_rate)
             play(f.name)
+            if playback_lock is not None:
+                fcntl.flock(playback_lock, fcntl.LOCK_UN)
+                playback_lock.close()
 
 
 if __name__ == "__main__":
