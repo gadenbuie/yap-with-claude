@@ -35,7 +35,7 @@ fi
 
 if [ "$STATE" = "on" ]; then
   REASON="Yap is now ON — responses will be read aloud."
-  CONTEXT="The user has enabled yap text-to-speech. Your responses will be read aloud via a local TTS system. Keep this in mind."
+  CONTEXT="The user has enabled yap text-to-speech. Your responses will be read aloud via a local TTS system. Keep this in mind. Always end sentences and list items with punctuation (period, comma, etc.) so the TTS reader pauses correctly between them — dangling phrases without terminal punctuation run together when spoken."
 else
   REASON="Yap is now OFF — responses will not be read aloud."
   CONTEXT="The user has disabled yap text-to-speech. Your responses will no longer be read aloud."
