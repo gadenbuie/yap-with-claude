@@ -74,10 +74,10 @@ Or use `yap` directly from the terminal:
 ```bash
 yap "Hello world"                    # speak text
 echo "Hello" | yap                   # pipe from stdin
-yap -v am_fenrir "Hello"             # pick a voice
+yap -v am_santa "Hello"              # pick a voice
 yap --voices                         # list available voices
 yap -o out.wav "Hello"               # save to file
-yap -s 1.3 "Faster speech"          # adjust speed
+yap -s 1.3 "Faster speech"           # adjust speed
 yap --no-wait "Hello"                # fire-and-forget, returns immediately
 ```
 
