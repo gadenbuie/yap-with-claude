@@ -33,7 +33,7 @@ From within a Claude Code session, add the yap marketplace and install the plugi
 
 ```
 /plugin marketplace add gadenbuie/yap-with-claude
-/plugin install yap@gadenbuie-yap
+/plugin install yap@yap-with-claude
 ```
 
 This installs the plugin to your user scope (available across all projects) and registers all three hooks. The `yap` script is bundled inside the plugin — no separate download needed.

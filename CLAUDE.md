@@ -7,7 +7,7 @@ A small single-file CLI that turns text into speech using [Kokoro TTS](https://g
 - **`yap`** — Single-file Python CLI (PEP 723 inline script metadata). Executable directly; run with `uv run yap` or just `yap` if on `$PATH`.
 - **`hooks/`** — Claude Code hook scripts (plugin root). `.claude/hooks/` contains symlinks to these.
 - **`.claude-plugin/plugin.json`** — Plugin manifest.
-- **`.claude-plugin/marketplace.json`** — Marketplace catalog; users install via `/plugin marketplace add gadenbuie/yap-with-claude` then `/plugin install yap@gadenbuie-yap`.
+- **`.claude-plugin/marketplace.json`** — Marketplace catalog; users install via `/plugin marketplace add gadenbuie/yap-with-claude` then `/plugin install yap@yap-with-claude`.
 - **`_dev/`** — Research docs, planning notes. Not shipped.
 - Model files (~300MB) auto-download to `~/.cache/kokoro-onnx/` on first run.
 
