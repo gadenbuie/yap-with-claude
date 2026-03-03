@@ -23,7 +23,7 @@ CACHE_DIR = Path.home() / ".cache" / "kokoro-onnx"
 MODEL_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx"
 VOICES_URL = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin"
 
-DEFAULT_VOICE = os.environ.get("YAP_VOICE", "am_liam")
+DEFAULT_VOICE = os.environ.get("YAP_VOICE", "am_fenrir")
 DEFAULT_SPEED = float(os.environ.get("YAP_SPEED", "1.25"))
 
 
