@@ -29,7 +29,7 @@ for i in $(seq 0 $((COUNT - 1))); do
   TEXT="$TEXT $ORDINAL question. $QUESTION"
 done
 
-yap -v am_fenrir "$TEXT" &
+yap "$TEXT" &
 disown
 
 exit 0

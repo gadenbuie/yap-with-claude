@@ -34,6 +34,6 @@ if [ -z "$CLEAN" ]; then
   exit 0
 fi
 
-yap -v am_fenrir "$CLEAN" &
+yap "$CLEAN" &
 disown
 exit 0
