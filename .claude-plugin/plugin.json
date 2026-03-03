@@ -1,0 +1,13 @@
+{
+  "name": "yap",
+  "version": "0.1.0",
+  "description": "Speaks Claude's responses and questions aloud using Kokoro TTS locally",
+  "author": {
+    "name": "Garrick Aden-Buie",
+    "url": "https://github.com/gadenbuie"
+  },
+  "repository": "https://github.com/gadenbuie/yap",
+  "license": "MIT",
+  "keywords": ["tts", "text-to-speech", "kokoro", "audio", "accessibility"],
+  "hooks": "./hooks/hooks.json"
+}
