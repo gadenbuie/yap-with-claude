@@ -17,6 +17,28 @@ if [ "$STOP_HOOK_ACTIVE" = "true" ]; then
   exit 0
 fi
 
+# Skip if Claude stopped to ask a question — yap-on-question.sh handles that turn
+TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path // empty')
+if [ -n "$TRANSCRIPT" ] && [ -f "$TRANSCRIPT" ]; then
+  LAST_TOOL=$(python3 -c "
+import sys, json
+entries = []
+for line in open('$TRANSCRIPT'):
+    try: entries.append(json.loads(line))
+    except: pass
+for entry in reversed(entries):
+    if entry.get('type') == 'assistant':
+        for block in entry.get('message', {}).get('content', []):
+            if block.get('type') == 'tool_use':
+                print(block.get('name', ''))
+                sys.exit(0)
+        break  # examined the most-recent assistant entry; stop scanning
+" 2>/dev/null)
+  if [ "$LAST_TOOL" = "AskUserQuestion" ]; then
+    exit 0
+  fi
+fi
+
 # Extract Claude's response text
 MESSAGE=$(echo "$INPUT" | jq -r '.last_assistant_message // empty')
 if [ -z "$MESSAGE" ]; then
