@@ -35,6 +35,7 @@ fi
 
 if [ "$STATE" = "on" ]; then
   REASON="Yap is now ON — responses will be read aloud."
+  # Keep in sync with yap-on-session-start.sh (on-state CONTEXT)
   CONTEXT="The user has enabled yap text-to-speech. Your responses will be read aloud via a local TTS system. Keep this in mind. Always end sentences and list items with punctuation (period, comma, etc.) so the TTS reader pauses correctly between them — dangling phrases without terminal punctuation run together when spoken. You can also speak something aloud mid-conversation, before your final response, by calling the Bash tool with: yap \"your message here\". Use this to surface urgent findings, warnings, or important information while you are still working. The call is intercepted by a hook to run non-blocking; if the hook is not installed, yap will run directly."
 else
   REASON="Yap is now OFF — responses will not be read aloud."
