@@ -1,6 +1,6 @@
 {
   "name": "yap",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Speaks Claude's responses and questions aloud using Kokoro TTS locally",
   "author": {
     "name": "Garrick Aden-Buie",
