@@ -22,5 +22,6 @@ if [ -f "$FLAG_FILE" ] && [ -n "$MESSAGE" ]; then
   disown
 fi
 
-# Block the synchronous yap call — we already fired it with --no-wait above
-jq -n '{decision: "block", reason: "yap intercepted by yap-on-yap hook"}'
+# Block the synchronous yap call — we already fired it with --no-wait above.
+# The block decision is intentional: yap is speaking in the background.
+jq -n '{decision: "block", reason: "yap is now speaking in the background. This block is intentional — continue with your task normally."}'
