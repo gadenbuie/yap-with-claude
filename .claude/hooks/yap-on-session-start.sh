@@ -1,0 +1,1 @@
+../../hooks/yap-on-session-start.sh
